@@ -10,36 +10,8 @@ namespace DungeonExplorer
     public class Item
 
     {
-        public string _itemName;
-        public string _itemDescription;
-
-        /// <summary>
-        /// gets and sets the name and description of items 
-        /// </summary>
-        public string ItemName
-        {
-            get
-            {
-                return _itemName;
-            }
-
-            private set
-            {
-                _itemName = value;
-            }
-        }
-        public string Itemdescription
-        {
-            get
-            {
-                return _itemDescription;
-            }
-
-            private set
-            {
-                _itemDescription = value;
-            }
-        }
+        public string ItemName { get; private set; }
+        public string ItemDescription { get; private set; }
 
         /// <summary>
         /// initialises a new item
@@ -48,8 +20,8 @@ namespace DungeonExplorer
         /// <param name="itemDescription">the description of the item</param>
         public Item(string itemName, string itemDescription)
         {
-            this.ItemName = itemName;
-            this.Itemdescription = itemDescription;
+            ItemName = itemName;
+            ItemDescription = itemDescription;
         }
         //displays item name in inventory 
         public override string ToString()
@@ -58,7 +30,43 @@ namespace DungeonExplorer
         }
     }
 
+    class Weapon : Item
+    {
+        public string WeaponDamage;
 
+        public Weapon(string itemName, string itemDescription, string weaponDamage) : base(itemName,itemDescription)
+        {
+            WeaponDamage = weaponDamage;
+        }
+    }
+
+    class Potion : Item
+    {
+        public int HealthGained;
+
+        public Potion(string itemName, string itemDescription, int healthGained) : base(itemName, itemDescription)
+        {
+            HealthGained = healthGained;
+        }
+    }
+
+    class SmallPotion : Potion
+    {
+
+        public SmallPotion() : base("Small Potion","a mysterious red liquid in a small bottle +25 to health",25)
+        {
+          
+        }
+    }
+
+    class LargePotion : Potion
+    {
+
+        public LargePotion() : base("Small Potion", "a mysterious red liquid in a large flask +50 to health", 50)
+        {
+
+        }
+    }
     /// <summary>
     /// Player class 
     /// gives the user a health pool and a inventory they can store items in 
@@ -66,50 +74,11 @@ namespace DungeonExplorer
     public class Player
 
     {
-        public string _Name;
-        public int _Health = 100;
-        private List<Item> _Inventory = new List<Item>();
+        public string Name { get; private set; }
+        public int Health{ get; private set; }
+        public List<Item> Inventory { get; private set; }
 
-        /// <summary>
-        /// gets and sets players name and health pool
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                return _Name;
-            }
 
-            private set
-            {
-                _Name = value;
-            }
-        }
-        public int Health
-        {
-            get
-            {
-                return _Health;
-            }
-
-            private set
-            {
-                _Health = value;
-            }
-        }
-        public List<Item> Inventory
-        {
-            get
-            {
-                return _Inventory;
-            }
-
-            private set
-            {
-                _Inventory = value;
-            }
-        
-        }
         /// <summary>
         /// `inisialises player
         /// </summary>
@@ -118,9 +87,9 @@ namespace DungeonExplorer
         /// <param name="inventory">tthe pplayers inventory</param>
         public Player(string name, int health, List<Item> inventory)
         {
-            this.Name = name;
-            this.Health = health;
-            this.Inventory = inventory;
+            Name = name;
+            Health = health;
+            Inventory = inventory;
         }
 
 
@@ -131,18 +100,57 @@ namespace DungeonExplorer
         public void PickUpItem(Item item)
         {
             //adds items to inventory 
-            _Inventory.Add(item);
+            Inventory.Add(item);
 
         }
         // shows items in inventory
         public string InventoryContents()
         {
 
-            return string.Join(", ", _Inventory);
+            return string.Join(", ", Inventory);
 
         }
 
-
     }
 
+    public class Monster 
+    {
+
+        public int Health { get; private set; }
+
+        public Monster(int health)
+        {
+            Health = health;
+        }
+    }
+
+    public class Skeleton : Monster
+    {
+        public string Klink;
+
+        public Skeleton(string Klink) : base(30)
+        {
+            
+        }
+    }
+
+    public class ReAnimatedCorpse : Monster
+    {
+        public string Grawr;
+
+        public ReAnimatedCorpse(string Grawr) : base(40)
+        {
+            
+        }
+    }
+
+    public class StoneGolem : Monster
+    {
+        public string Crunch;
+
+        public StoneGolem(string Crunch) : base(50)
+        {
+          
+        }
+    }
 }

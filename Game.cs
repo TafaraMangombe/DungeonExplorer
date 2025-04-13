@@ -5,11 +5,18 @@ using System.Media;
 
 namespace DungeonExplorer
 {
+    /// <summary>
+    /// Game class
+    /// where the game is setup
+    /// </summary>
     internal class Game
     {
         private Player player;
         private Room currentRoom;
 
+        /// <summary>
+        /// holds the creation of new objects, the player and rooms and their description
+        /// </summary>
         public Game()
         {
             // Initialize the game with one room and one player
@@ -22,6 +29,9 @@ namespace DungeonExplorer
                 $"\ndestroyed and shattered weapons filled the room with only a rusty dagger in intact.There is also what looks like a key next to it ");
 
         }
+        /// <summary>
+        /// starts the game logic
+        /// </summary>
         public void Start()
         {
             // Change the playing logic into true and populate the while loop

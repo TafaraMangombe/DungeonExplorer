@@ -12,6 +12,7 @@ namespace DungeonExplorer
 {
     internal class Program
     {
+        // the main method of the game 
         static void Main(string[] args)
         {
             Game game = new Game();
