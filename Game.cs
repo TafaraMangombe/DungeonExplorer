@@ -12,22 +12,34 @@ namespace DungeonExplorer
     internal class Game
     {
         private Player player;
-        private Room currentRoom;
-
+     
+        private Room CurrentRoom;
         /// <summary>
         /// holds the creation of new objects, the player and rooms and their description
         /// </summary>
         public Game()
         {
-            // Initialize the game with one room and one player
+            // creates the player
             Console.Write("Please enter your name: ");
             String usersName = Console.ReadLine();
-            this.player = new Player(usersName, 100, new List<Item>());
-            this.currentRoom = new Room($"{usersName} you have woken up in a dark and damp room only lit up by lanterns hanging from the ceiling. " +
+            player = new Player(usersName, 100, new List<Item>());
+
+            // Creates the games room
+             Room StartingRoom = new Room("Starting chamber", $"you have woken up in a dark and damp room only lit up by lanterns hanging from the ceiling. " +
                 $"\nVines and branches cover the walls of this unfamiliar location, and the sound of water drops echo." +
                 $"\nPiles of bones and pools of bloods filled the room with the smell of death and countless amounts of " +
                 $"\ndestroyed and shattered weapons filled the room with only a rusty dagger in intact.There is also what looks like a key next to it ");
+            Room SecondRoom = new Room("The forgotten Graves", "The smell of death and despair surround this underground graveyard the sound of dirt shaking and bones rattling surround you. ");
+            Room ThirdRoom = new Room("The lost Village","");
+            Room FourthRoom = new Room("Jungle", "");
+            Room FifthRoom = new Room("The final chamber", "Piles of bones and armour you have arrived at the bosses chamber ");
 
+            StartingRoom.NextRoom = SecondRoom;
+            SecondRoom.NextRoom = ThirdRoom;
+            ThirdRoom.NextRoom = FourthRoom;
+            FourthRoom.NextRoom = FifthRoom;
+
+            CurrentRoom = StartingRoom;
         }
         /// <summary>
         /// starts the game logic
@@ -87,14 +99,16 @@ namespace DungeonExplorer
                     else if (action == "description")
 
                     {
-                        Console.WriteLine(currentRoom.GetDescription());
+                        Console.WriteLine(CurrentRoom.GetDescription());
                         Start();
                     }
 
                     //allows user to go to next room
                     else if (action == "next")
                     {
-                        Console.WriteLine("Currently you can not leave this room");
+                        CurrentRoom = CurrentRoom.NextRoom;
+                        Console.WriteLine($"\nYou move to: {CurrentRoom.Name}");
+                        Console.WriteLine(CurrentRoom.Description);
                         Start();
                     }
 

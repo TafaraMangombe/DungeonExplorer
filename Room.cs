@@ -7,17 +7,21 @@ namespace DungeonExplorer
     /// </summary>
     public class Room
     {
-        private string description;
 
-        public Room(string description)
+        public string Name {get; private set; }
+        public string Description{ get; private set; }
+
+        public Room NextRoom { get; set; }
+        public Room(string name, string description)
         {
-            this.description = description;
+            Name = name;
+            Description = description;
         }
 
         public string GetDescription()
         {
 
-            return description;
+            return Description;
         }
     }
 }
