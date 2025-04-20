@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DungeonExplorer
 {
@@ -32,9 +33,9 @@ namespace DungeonExplorer
 
     class Weapon : Item
     {
-        public string WeaponDamage;
+        public int WeaponDamage;
 
-        public Weapon(string itemName, string itemDescription, string weaponDamage) : base(itemName,itemDescription)
+        public Weapon(string itemName, string itemDescription, int weaponDamage) : base(itemName,itemDescription)
         {
             WeaponDamage = weaponDamage;
         }
@@ -67,33 +68,50 @@ namespace DungeonExplorer
 
         }
     }
+
+    public interface IDamageble
+    {
+        void Damage(int DamageDone);
+
+    }
+
+    public class Creature
+    {
+        public string Name { get;  set; }
+        public int Health { get;  set; }
+
+        public Creature(string name, int health)
+        {
+            Name = name;
+            Health = health;
+        }
+    }
     /// <summary>
     /// Player class 
     /// gives the user a health pool and a inventory they can store items in 
     /// </summary>
-    public class Player
+    public class Player : Creature, IDamageble 
 
     {
-        public string Name { get; private set; }
-        public int Health{ get; private set; }
-        public List<Item> Inventory { get; private set; }
+      
+        public List<Item> Inventory { get;  set; }
 
 
         /// <summary>
-        /// `inisialises player
+        /// inisialises player
         /// </summary>
-        /// <param name="name">the name of the player </param>
-        /// <param name="health">the health of the player </param>
-        /// <param name="inventory">tthe pplayers inventory</param>
-        public Player(string name, int health, List<Item> inventory)
+        public Player(string name, int health, List<Item> inventory) : base(name,health)
         {
-            Name = name;
-            Health = health;
+
             Inventory = inventory;
         }
 
-
-
+        public void Damage(int DamageDone)
+        {
+            Health -= DamageDone;
+            Console.WriteLine($"you have taken {DamageDone} damage ");
+        }
+        
         /// <summary>
         /// allows users to pick up items
         /// </summary>
@@ -113,22 +131,29 @@ namespace DungeonExplorer
 
     }
 
-    public class Monster 
+    public class Monster : Creature,IDamageble
     {
 
-        public int Health { get; private set; }
+        
 
-        public Monster(int health)
+        public Monster(string name ,int health) : base(name,health)
         {
-            Health = health;
+        
         }
+
+        public void Damage(int DamageDone)
+        {
+            Health -= DamageDone;
+            Console.WriteLine($"{Name} have taken {DamageDone} damage ");
+        }
+
     }
 
     public class Skeleton : Monster
     {
         public string Klink;
 
-        public Skeleton(string Klink) : base(30)
+        public Skeleton(string Klink) : base("Skeleton", 30)
         {
             
         }
@@ -138,7 +163,7 @@ namespace DungeonExplorer
     {
         public string Grawr;
 
-        public ReAnimatedCorpse(string Grawr) : base(40)
+        public ReAnimatedCorpse(string Grawr) : base("Reanimated Corpse", 40)
         {
             
         }
@@ -148,7 +173,7 @@ namespace DungeonExplorer
     {
         public string Crunch;
 
-        public StoneGolem(string Crunch) : base(50)
+        public StoneGolem(string Crunch) : base("Stone Golem",50)
         {
           
         }

@@ -30,9 +30,9 @@ namespace DungeonExplorer
                 $"\nPiles of bones and pools of bloods filled the room with the smell of death and countless amounts of " +
                 $"\ndestroyed and shattered weapons filled the room with only a rusty dagger in intact.There is also what looks like a key next to it ");
             Room SecondRoom = new Room("The forgotten Graves", "The smell of death and despair surround this underground graveyard the sound of dirt shaking and bones rattling surround you. ");
-            Room ThirdRoom = new Room("The lost Village","");
-            Room FourthRoom = new Room("Jungle", "");
-            Room FifthRoom = new Room("The final chamber", "Piles of bones and armour you have arrived at the bosses chamber ");
+            Room ThirdRoom = new Room("The lost Village","empty houses and rotting crop fields ");
+            Room FourthRoom = new Room("Jungle", "a mystirous jungle filled with unusual plants and wild life");
+            Room FifthRoom = new Room("The final chamber", "Piles of bones and armour you have arrived at the bosses chamber");
 
             StartingRoom.NextRoom = SecondRoom;
             SecondRoom.NextRoom = ThirdRoom;
@@ -49,7 +49,7 @@ namespace DungeonExplorer
             // Change the playing logic into true and populate the while loop
             //creates item dagger
             bool playing = true;
-            Item dagger = new Item("Dagger", "a rusty old weapon");
+            Weapon dagger = new Weapon("Dagger", "a rusty old weapon",15);
             Item gold_key = new Item("Gold Key", "a two prong key");
 
             while (playing)
