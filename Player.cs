@@ -1,6 +1,9 @@
-﻿using System;
+﻿using DungeonExplorer;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Policy;
 
 namespace DungeonExplorer
 {
@@ -11,8 +14,8 @@ namespace DungeonExplorer
     public class Item
 
     {
-        public string ItemName { get; private set; }
-        public string ItemDescription { get; private set; }
+        public string ItemName { get; set; }
+        public string ItemDescription { get;  set; }
 
         /// <summary>
         /// initialises a new item
@@ -31,7 +34,7 @@ namespace DungeonExplorer
         }
     }
 
-    class Weapon : Item
+    public  class Weapon : Item
     {
         public int WeaponDamage;
 
@@ -41,7 +44,7 @@ namespace DungeonExplorer
         }
     }
 
-    class Potion : Item
+    public class Potion : Item
     {
         public int HealthGained;
 
@@ -51,7 +54,7 @@ namespace DungeonExplorer
         }
     }
 
-    class SmallPotion : Potion
+    public class SmallPotion : Potion
     {
 
         public SmallPotion() : base("Small Potion","a mysterious red liquid in a small bottle +25 to health",25)
@@ -60,15 +63,16 @@ namespace DungeonExplorer
         }
     }
 
-    class LargePotion : Potion
+    public class LargePotion : Potion
     {
 
-        public LargePotion() : base("Small Potion", "a mysterious red liquid in a large flask +50 to health", 50)
+        public LargePotion() : base("Large Potion", "a mysterious red liquid in a large flask +50 to health", 50)
         {
 
         }
     }
 
+    
     public interface IDamageble
     {
         void Damage(int DamageDone);
@@ -90,28 +94,58 @@ namespace DungeonExplorer
     /// Player class 
     /// gives the user a health pool and a inventory they can store items in 
     /// </summary>
-    public class Player : Creature, IDamageble 
+    public class Player : Creature, IDamageble
 
     {
-      
-        public List<Item> Inventory { get;  set; }
+
+        public List<Item> Inventory { get; set; }
+        public Weapon Equip { get; set; }
+
+
 
 
         /// <summary>
         /// inisialises player
-        /// </summary>
-        public Player(string name, int health, List<Item> inventory) : base(name,health)
+        /// </summary>ng
+        public Player(string name, int health, List<Item> inventory) : base(name, health)
         {
 
             Inventory = inventory;
+
         }
 
+        public void EquipWeapon(Weapon weapon)
+        {
+            Equip = weapon;
+        }
+
+        public void Healing(Potion potion)
+        {
+           
+            Health += potion.HealthGained;
+            if(Health > 100)
+            {
+                Health = 100;
+            }
+            Console.WriteLine($"{potion.HealthGained} has been added to your health ");
+        }
         public void Damage(int DamageDone)
         {
             Health -= DamageDone;
             Console.WriteLine($"you have taken {DamageDone} damage ");
         }
-        
+
+        public void Attack(Monster monster)
+        {
+            if (Equip == null)
+            {
+                Console.WriteLine("no weapon is equipped you are unable to attack");
+            }
+            else
+            {
+                monster.Damage(Equip.WeaponDamage);
+            }
+        }
         /// <summary>
         /// allows users to pick up items
         /// </summary>
@@ -129,12 +163,21 @@ namespace DungeonExplorer
 
         }
 
+        public void UseItem(Weapon weapon)
+        {
+            EquipWeapon(weapon);
+        }
+        
+
     }
+
 
     public class Monster : Creature,IDamageble
     {
 
-        
+        public Weapon Equip { get; set; }
+
+    
 
         public Monster(string name ,int health) : base(name,health)
         {
@@ -147,15 +190,31 @@ namespace DungeonExplorer
             Console.WriteLine($"{Name} have taken {DamageDone} damage ");
         }
 
+        public void EquipWeapon(Weapon weapon)
+        {
+            Equip = weapon;
+            
+        }
+
+        public void Attack(Player player)
+        {
+            {
+                player.Damage(Equip.WeaponDamage);
+            }
+        }
+
     }
 
+    
     public class Skeleton : Monster
     {
         public string Klink;
 
+       
         public Skeleton(string Klink) : base("Skeleton", 30)
         {
-            
+            Weapon Bow = new Weapon("Bow", "a long ranged but low power weapon", 10);
+            EquipWeapon(Bow);
         }
     }
 
@@ -165,7 +224,8 @@ namespace DungeonExplorer
 
         public ReAnimatedCorpse(string Grawr) : base("Reanimated Corpse", 40)
         {
-            
+            Weapon Club = new Weapon("Club", "a short ranged blunt weapon ", 14);
+            EquipWeapon(Club);
         }
     }
 
@@ -175,7 +235,22 @@ namespace DungeonExplorer
 
         public StoneGolem(string Crunch) : base("Stone Golem",50)
         {
-          
+            Weapon StoneFist = new Weapon("Stone Fists ", "the dangerous hands of a stone golem", 17);
+            EquipWeapon(StoneFist);
         }
     }
+}
+
+public class Statistics : Creature 
+{
+  
+    public Statistics(string name, int health) : base( name, health)
+    {
+
+    }
+   
+    public void ShowStats()
+    {
+        Console.WriteLine($"Name: {Name} \n Max health:{Health} ");
+    }     
 }
