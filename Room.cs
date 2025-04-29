@@ -4,17 +4,17 @@ using System.Collections.Generic;
 namespace DungeonExplorer
 {
     /// <summary>
-    /// creates the rooms the users navigates
+    /// creates the rooms the users navigates holds the description, enimies ams items in rooms
     /// </summary>
     public class Room
     {
 
-        public string Name {get; private set; }
-        public string Description{ get; private set; }
-        public  List<Monster> Enemies { get; set; }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        public List<Monster> Enemies { get; set; }
 
         public List<Item> RoomItems { get; set; }
-       
+
 
         public Room NextRoom { get; set; }
         public Room(string name, string description)
@@ -23,10 +23,10 @@ namespace DungeonExplorer
             Description = description;
             Enemies = new List<Monster>();
             RoomItems = new List<Item>();
-            
+
         }
 
-        
+        // shows descrition of the room
         public string GetDescription()
         {
 
@@ -34,4 +34,3 @@ namespace DungeonExplorer
         }
     }
 }
-

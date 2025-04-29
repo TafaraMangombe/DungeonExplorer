@@ -5,6 +5,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Media;
 using System.Net;
+using System.Threading;
 
 namespace DungeonExplorer
 {
@@ -15,14 +16,14 @@ namespace DungeonExplorer
     internal class Game
     {
         private Player player;
-     
+
         private Room CurrentRoom;
         /// <summary>
         /// holds the creation of new objects, the player and rooms and their description
         /// </summary>
         public Game()
         {
-            // creates the player
+            // allws user to enter a name 
             String usersName;
 
             while (true)
@@ -38,7 +39,7 @@ namespace DungeonExplorer
                     break;
                 }
             }
-
+            // creates the player
             player = new Player(usersName, 100, new List<Item>());
             Weapon dagger = new Weapon("Dagger", "a rusty old weapon", 15);
             player.EquipWeapon(dagger);
@@ -48,7 +49,7 @@ namespace DungeonExplorer
             // Creates the games rooms
             Room StartingRoom = new Room("Starting chamber", $"you have woken up in a dark and damp room only lit up by lanterns hanging from the ceiling.");
             Room SecondRoom = new Room("The forgotten Graves", "The smell of death and despair surround this underground graveyard the sound of dirt shaking and bones rattling surround you. ");
-            Room ThirdRoom = new Room("The lost Village","empty houses and rotting crop fields ");
+            Room ThirdRoom = new Room("The lost Village", "empty houses and rotting crop fields ");
             Room FourthRoom = new Room("Jungle", "a mystirous jungle filled with unusual plants and wild life");
             Room FifthRoom = new Room("The final chamber", "Piles of bones and armour you have arrived at the bosses chamber");
 
@@ -60,62 +61,52 @@ namespace DungeonExplorer
 
             CurrentRoom = StartingRoom;
 
-            // creates the the skeleton enines for room 1
-            Skeleton Skeleton1 = new Skeleton("Klink");
-
-            // adds skeletons to room 1
+            // creates and adds the the skeleton enines for room 1
+            Skeleton Skeleton1 = new Skeleton();
             StartingRoom.Enemies.Add(Skeleton1);
 
-            // creates the the skeleton enines for room 2
-            Skeleton Skeleton2 = new Skeleton("Klink");
-            Skeleton Skeleton3 = new Skeleton("Klink");
-            Skeleton Skeleton4 = new Skeleton("Klink");
-
-            // adds skeletons to room 2
+            // creates and adds the the skeleton enines for room 2
+            Skeleton Skeleton2 = new Skeleton();
+            Skeleton Skeleton3 = new Skeleton();
+            Skeleton Skeleton4 = new Skeleton();
             SecondRoom.Enemies.Add(Skeleton2);
             SecondRoom.Enemies.Add(Skeleton3);
             SecondRoom.Enemies.Add(Skeleton4);
 
-            // creates the Reanimated corpses for room 3 
-            ReAnimatedCorpse Zombie1 = new ReAnimatedCorpse("Grawr");
-            ReAnimatedCorpse Zombie2 = new ReAnimatedCorpse("Grawr");
-            ReAnimatedCorpse Zombie3 = new ReAnimatedCorpse("Grawr");
-
-            //adds Reanimated corpses to room 3 
+            // creates and adds the Reanimated corpses for room 3 
+            ReAnimatedCorpse Zombie1 = new ReAnimatedCorpse();
+            ReAnimatedCorpse Zombie2 = new ReAnimatedCorpse();
+            ReAnimatedCorpse Zombie3 = new ReAnimatedCorpse();
             ThirdRoom.Enemies.Add(Zombie1);
             ThirdRoom.Enemies.Add(Zombie2);
             ThirdRoom.Enemies.Add(Zombie3);
 
-            // creates the stone golum corpses for room 4
-            StoneGolem StoneGolum1 = new StoneGolem("Crunch");
-            StoneGolem StoneGolum2 = new StoneGolem("Crunch");
-            StoneGolem StoneGolum3 = new StoneGolem("Crunch");
-
-            // adds stone golum to room 4
+            // creates and adds the stone golum corpses for room 4
+            StoneGolem StoneGolum1 = new StoneGolem();
+            StoneGolem StoneGolum2 = new StoneGolem();
+            StoneGolem StoneGolum3 = new StoneGolem();
             FourthRoom.Enemies.Add(StoneGolum1);
             FourthRoom.Enemies.Add(StoneGolum2);
             FourthRoom.Enemies.Add(StoneGolum3);
 
-            
+            // creates and adds the potions corpses for room 2
             SmallPotion SmallPotion1 = new SmallPotion();
-            
             SecondRoom.RoomItems.Add(SmallPotion1);
 
+            // creates and adds the stone golum corpses for room 3
             LargePotion LargePotion1 = new LargePotion();
-            
             ThirdRoom.RoomItems.Add(LargePotion1);
 
-
+            // creates and adds the stone golum corpses for room 4
             LargePotion LargePotion2 = new LargePotion();
             SmallPotion SmallPotion2 = new SmallPotion();
-
             FourthRoom.RoomItems.Add(LargePotion2);
             FourthRoom.RoomItems.Add(SmallPotion2);
 
+            // creates and adds the stone golum corpses for room 5
             LargePotion LargePotion3 = new LargePotion();
             SmallPotion SmallPotion3 = new SmallPotion();
             SmallPotion SmallPotion4 = new SmallPotion();
-            
             FifthRoom.RoomItems.Add(LargePotion3);
             FifthRoom.RoomItems.Add(SmallPotion2);
             FifthRoom.RoomItems.Add(SmallPotion3);
@@ -135,16 +126,16 @@ namespace DungeonExplorer
 
             while (playing)
             {
-                
+                //Menu text
                 Console.WriteLine("Would you Like to Check:" +
                  "\n-Stats \n-Attack \n-Health \n-Inventory \n-Description \n-'Next' Room \n-End");
                 while (true)
                 {
-
+                    //lets user pick a action
                     string action = Console.ReadLine().ToLower();
 
 
-                    if(action == "stats")
+                    if (action == "stats")
                     {
                         playerStats.ShowStats();
                         break;
@@ -206,7 +197,7 @@ namespace DungeonExplorer
                                     if (selectPotion != null)
                                     {
                                         player.Healing(selectPotion);
-                                    
+
                                     }
                                     else
                                     {
@@ -255,21 +246,21 @@ namespace DungeonExplorer
                         // Console.WriteLine("There is strange flasks around the room would you like to pick them up 'yes' or 'no'");
 
                         if (CurrentRoom.RoomItems.Count == 0)
+                        {
+                            Console.WriteLine("There are currently no items in this Room");
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"There are Items in this room would you lie to collect them? Yes or No");
+                            string ItemAnswer = Console.ReadLine().ToLower();
+                            if (ItemAnswer == "yes")
                             {
-                                Console.WriteLine("There are currently no items in this Room");
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine($"There are Items in this room would you lie to collect them? Yes or No");
-                                string ItemAnswer = Console.ReadLine().ToLower();
-                                if(ItemAnswer == "yes")
+                                foreach (var item in CurrentRoom.RoomItems)
                                 {
-                                    foreach(var item in CurrentRoom.RoomItems)
-                                    {
-                                        Console.WriteLine("You have picked up items");
-                                        player.PickUpItem(item);
-                                        
+                                    Console.WriteLine("You have picked up items");
+                                    player.PickUpItem(item);
+
 
 
                                 }
@@ -277,22 +268,22 @@ namespace DungeonExplorer
 
 
                             }
-                                else if(ItemAnswer == "no")
-                                {
-                                    Console.WriteLine("You have chosen to leave items");
-                                    break;
+                            else if (ItemAnswer == "no")
+                            {
+                                Console.WriteLine("You have chosen to leave items");
+                                break;
 
-                                    
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Please enter yes or no");
-                                    break;
-                                }
 
                             }
+                            else
+                            {
+                                Console.WriteLine("Please enter yes or no");
+                                break;
+                            }
+
                         }
-                    
+                    }
+
 
                     //allows user to go to next room
                     else if (action == "next")
@@ -336,5 +327,3 @@ namespace DungeonExplorer
         }
     }
 }
-
-
