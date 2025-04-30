@@ -237,7 +237,7 @@ namespace DungeonExplorer
                     else if (action == "inventory")
                     {
                         Console.WriteLine(player.InventoryContents());
-                        Start();
+                        break;
                     }
                     //allows user to pick up items if they are available
                     else if (action == "items")
