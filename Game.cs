@@ -108,13 +108,13 @@ namespace DungeonExplorer
             FourthRoom.RoomItems.Add(LargePotion3);
             FourthRoom.RoomItems.Add(SmallPotion2);
 
-            // creates and adds the potion for room 2
+            // creates and adds the potion for room 5
             LargePotion LargePotion4 = new LargePotion();
             SmallPotion SmallPotion3 = new SmallPotion();
             SmallPotion SmallPotion4 = new SmallPotion();
             FifthRoom.RoomItems.Add(LargePotion4);
-            FifthRoom.RoomItems.Add(SmallPotion2);
             FifthRoom.RoomItems.Add(SmallPotion3);
+            FifthRoom.RoomItems.Add(SmallPotion4);
 
 
 
@@ -203,6 +203,7 @@ namespace DungeonExplorer
                                     if (selectPotion != null)
                                     {
                                         player.Healing(selectPotion);
+                                        player.Inventory.Remove(selectPotion);
 
                                     }
                                     else
@@ -244,24 +245,63 @@ namespace DungeonExplorer
                     {
                         Console.WriteLine(player.InventoryContents());
 
-                        Console.WriteLine("would you like to sort your potions from most strongest to weakest yes or no");
-                        String inventoryAnswer = Console.ReadLine().ToLower();
-                        if(inventoryAnswer == "yes")
+                        Console.WriteLine("Would you like to drop any items? or Would you like to sort your potions from most strongest to weakest \n Type 'drop' or 'sort' ");
+                        string inventoryAnswer = Console.ReadLine().ToLower();
+                        if (inventoryAnswer == "drop")
                         {
-                            var sortPotions = player.Inventory
-                                .OfType<Potion>()
-                                .OrderByDescending(p => p.HealthGained)
-                                .ToList();
-                            Console.WriteLine(string.Join(", ", sortPotions.Select(p => $"{p.ItemName}")));
-                            break;
-                            
+                            if (!player.Inventory.Any())
+                            {
+                                Console.WriteLine("your inventory is currently empty there is nothing to drop");
+                                break;
+                            }
+                            Console.WriteLine("would you like to drop a item yes or no");
+                            String dropAnswer = Console.ReadLine().ToLower();
+                            if (dropAnswer == "yes")
+                            {
+                                Console.WriteLine(player.InventoryContents());
+                                Console.WriteLine("enter the name of the item you want to drop");
+                                String itemBeingDropped = Console.ReadLine();
+                                Item itemToDrop = player.Inventory.FirstOrDefault(i => i.ItemName.Equals(itemBeingDropped, StringComparison.OrdinalIgnoreCase));
+                                if (itemToDrop != null)
+                                {
+                                    player.Inventory.Remove(itemToDrop);
+                                    Console.WriteLine($"{itemToDrop.ItemName} is no longer in your inventory");
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("no item with that name can be found in your inventory");
+                                    break;
+                                }
+                            }
+                            else if(dropAnswer == "no")
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("please pick yes or no");
+                            }
                         }
-                        else if (inventoryAnswer == "no")
-                        break;
-
+                        else if (inventoryAnswer == "sort")
+                        {
+                            Console.WriteLine("would you like to sort your potions from most strongest to weakest yes or no");
+                            String sortAnswer = Console.ReadLine().ToLower();
+                            if (sortAnswer == "yes")
+                            {
+                                var sortPotions = player.Inventory
+                                    .OfType<Potion>()
+                                    .OrderByDescending(p => p.HealthGained)
+                                    .ToList();
+                                Console.WriteLine(string.Join(", ", sortPotions.Select(p => $"{p.ItemName}")));
+                                break;
+                            }
+                            else if (sortAnswer == "no")
+                                break;
+                        }
                         else
                         {
-                            Console.WriteLine("please next time enter their yes or no");
+                            Console.WriteLine("please next time enter drop or sort");
                             break;
                         }
 

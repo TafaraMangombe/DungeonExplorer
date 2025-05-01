@@ -94,7 +94,14 @@ namespace DungeonExplorer
         public void PickUpItem(Item item)
         {
             //adds items to inventory 
-            Inventory.Add(item);
+            if (Inventory.Count >= 10)
+            {
+                Console.WriteLine(" Your inventory is full there is no more space for items");
+            }
+            else
+            {
+                Inventory.Add(item);
+            }
 
         }
         // shows items in inventory
@@ -109,12 +116,6 @@ namespace DungeonExplorer
         public void UseItem(Weapon weapon)
         {
             EquipWeapon(weapon);
-        }
-
-        public void DropItem(Item item)
-        {
-            //removes items from inventory 
-            Inventory.Remove(item);
         }
     }
 
