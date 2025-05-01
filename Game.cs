@@ -23,6 +23,8 @@ namespace DungeonExplorer
         /// </summary>
         public Game()
         {
+            Test.RunTests();
+
             // allws user to enter a name 
             String usersName;
 
@@ -89,25 +91,28 @@ namespace DungeonExplorer
             FourthRoom.Enemies.Add(StoneGolum2);
             FourthRoom.Enemies.Add(StoneGolum3);
 
-            // creates and adds the potions corpses for room 2
+            // creates and adds the potion for room 2
             SmallPotion SmallPotion1 = new SmallPotion();
             SecondRoom.RoomItems.Add(SmallPotion1);
 
-            // creates and adds the stone golum corpses for room 3
+            // creates and adds the potion for room 3
             LargePotion LargePotion1 = new LargePotion();
-            ThirdRoom.RoomItems.Add(LargePotion1);
-
-            // creates and adds the stone golum corpses for room 4
             LargePotion LargePotion2 = new LargePotion();
+            ThirdRoom.RoomItems.Add(LargePotion1);
+            ThirdRoom.RoomItems.Add(LargePotion2);
+
+
+            // creates and adds the potion for room 4
+            LargePotion LargePotion3 = new LargePotion();
             SmallPotion SmallPotion2 = new SmallPotion();
-            FourthRoom.RoomItems.Add(LargePotion2);
+            FourthRoom.RoomItems.Add(LargePotion3);
             FourthRoom.RoomItems.Add(SmallPotion2);
 
-            // creates and adds the stone golum corpses for room 5
-            LargePotion LargePotion3 = new LargePotion();
+            // creates and adds the potion for room 2
+            LargePotion LargePotion4 = new LargePotion();
             SmallPotion SmallPotion3 = new SmallPotion();
             SmallPotion SmallPotion4 = new SmallPotion();
-            FifthRoom.RoomItems.Add(LargePotion3);
+            FifthRoom.RoomItems.Add(LargePotion4);
             FifthRoom.RoomItems.Add(SmallPotion2);
             FifthRoom.RoomItems.Add(SmallPotion3);
 
@@ -122,6 +127,7 @@ namespace DungeonExplorer
             // Change the playing logic into true and populate the while loop
             bool playing = true;
             Statistics playerStats = new Statistics(player.Name, player.Health);
+            
 
 
             while (playing)
@@ -237,7 +243,28 @@ namespace DungeonExplorer
                     else if (action == "inventory")
                     {
                         Console.WriteLine(player.InventoryContents());
+
+                        Console.WriteLine("would you like to sort your potions from most strongest to weakest yes or no");
+                        String inventoryAnswer = Console.ReadLine().ToLower();
+                        if(inventoryAnswer == "yes")
+                        {
+                            var sortPotions = player.Inventory
+                                .OfType<Potion>()
+                                .OrderByDescending(p => p.HealthGained)
+                                .ToList();
+                            Console.WriteLine(string.Join(", ", sortPotions.Select(p => $"{p.ItemName}")));
+                            break;
+                            
+                        }
+                        else if (inventoryAnswer == "no")
                         break;
+
+                        else
+                        {
+                            Console.WriteLine("please next time enter their yes or no");
+                            break;
+                        }
+
                     }
                     //allows user to pick up items if they are available
                     else if (action == "items")
@@ -265,6 +292,7 @@ namespace DungeonExplorer
 
                                 }
                                 CurrentRoom.RoomItems.Clear();
+                                break;
 
 
                             }

@@ -111,7 +111,11 @@ namespace DungeonExplorer
             EquipWeapon(weapon);
         }
 
-
+        public void DropItem(Item item)
+        {
+            //removes items from inventory 
+            Inventory.Remove(item);
+        }
     }
 
     /// <summary>

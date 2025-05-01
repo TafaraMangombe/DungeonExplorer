@@ -12,7 +12,7 @@ namespace DungeonExplorer
     /// Monster class
     /// a subclass of the creature class that creates hostile monsters
     /// </summary>
-    public class Monster : Creature, IDamageble
+    public class Monster : Creature, IDamageble 
     {
 
         public Weapon Equip { get; set; }

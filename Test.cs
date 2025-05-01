@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
+    /// <summary>
+    /// tests a group of features and methods needed for the program to run succefully 
+    /// </summary>
     public class Test
     {
         public static Room currentTestRoom;
@@ -23,7 +26,6 @@ namespace DungeonExplorer
             Player testPlayer = new Player("Player", 100, new List<Item>());
             SmallPotion testSmallPotion = new SmallPotion();
             testPlayer.PickUpItem(testSmallPotion);
-            Console.WriteLine(testPlayer.InventoryContents());
             if (testPlayer.Inventory.Contains(testSmallPotion))
             {
                 Console.WriteLine("Test PickUpItemAndInventory has a success");
@@ -34,10 +36,11 @@ namespace DungeonExplorer
             }
         }
 
+        //tests plyer healing and moster damage
         public static void HealAndDamage()
         {
             Player testPlayer2 = new Player("Player", 100, new List<Item>());
-            Weapon testDagger = new Weapon("test Dagger", "a weopon only used for the test class", 100);
+            Weapon testDagger = new Weapon("test Dagger", "a weapon only used for the test class", 100);
             testPlayer2.EquipWeapon(testDagger);
             LargePotion testLargePotion = new LargePotion();
             testPlayer2.PickUpItem(testLargePotion);
@@ -52,10 +55,11 @@ namespace DungeonExplorer
             }
             else
             {
-                Console.WriteLine("Test HealAndDamage was a failed");
+                Console.WriteLine("Test HealAndDamage has failed");
             }
         }
 
+        // tests the users ability to move rooms 
         public static void TestNextRoom()
         {
             Room testRoom1 = new Room("Room 1", "This is test room 1");
@@ -73,6 +77,7 @@ namespace DungeonExplorer
             }
         }
 
+        // tests the players ability to die 
         public static void PlayerDeath()
         {
             Player testPlayer3 = new Player("Player", 100, new List<Item>());
