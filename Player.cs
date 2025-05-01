@@ -123,7 +123,6 @@ namespace DungeonExplorer
     /// Statistics class
     /// shows the players stats 
     /// </summary>
-
     public class Statistics : Creature
     {
 
@@ -131,10 +130,10 @@ namespace DungeonExplorer
         {
 
         }
-
+        // displays the players stats
         public void ShowStats()
         {
-            Console.WriteLine($"Name: {Name} \n Max health:{Health} ");
+            Console.WriteLine($"Name: {Name} \n Max health: {Health} ");
         }
     }
 }

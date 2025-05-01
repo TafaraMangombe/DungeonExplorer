@@ -68,7 +68,7 @@ namespace DungeonExplorer
 
         public ReAnimatedCorpse() : base("Reanimated Corpse", 40)
         {
-            Weapon Club = new Weapon("Club", "a short ranged blunt weapon ", 13);
+            Weapon Club = new Weapon("Club", "a short ranged blunt weapon ", 12);
             EquipWeapon(Club);
         }
     }
@@ -81,9 +81,9 @@ namespace DungeonExplorer
     {
 
 
-        public StoneGolem() : base("Stone Golem", 50)
+        public StoneGolem() : base("Stone Golem", 45)
         {
-            Weapon StoneFist = new Weapon("Stone Fists ", "the dangerous hands of a stone golem", 16);
+            Weapon StoneFist = new Weapon("Stone Fists ", "the dangerous hands of a stone golem", 15);
             EquipWeapon(StoneFist);
         }
     }

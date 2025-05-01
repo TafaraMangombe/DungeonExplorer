@@ -24,6 +24,7 @@ namespace DungeonExplorer
         public Game()
         {
             Test.RunTests();
+            Console.WriteLine("all tests have been successful now ready to start Dungeon explorers \n");
 
             // allws user to enter a name 
             String usersName;
@@ -86,10 +87,15 @@ namespace DungeonExplorer
             // creates and adds the stone golum corpses for room 4
             StoneGolem StoneGolum1 = new StoneGolem();
             StoneGolem StoneGolum2 = new StoneGolem();
-            StoneGolem StoneGolum3 = new StoneGolem();
             FourthRoom.Enemies.Add(StoneGolum1);
             FourthRoom.Enemies.Add(StoneGolum2);
-            FourthRoom.Enemies.Add(StoneGolum3);
+
+            // creates and adds the boss of the game 
+            Monster CrimsonDragon = new Monster("Crimson Dragon", 100);
+            Weapon FireBreathe = new Weapon("Fire Breathe", "a sweeping attack with far range", 18);
+            CrimsonDragon.EquipWeapon(FireBreathe);
+            FifthRoom.Enemies.Add(CrimsonDragon);
+
 
             // creates and adds the potion for room 2
             SmallPotion SmallPotion1 = new SmallPotion();
@@ -105,16 +111,24 @@ namespace DungeonExplorer
             // creates and adds the potion for room 4
             LargePotion LargePotion3 = new LargePotion();
             SmallPotion SmallPotion2 = new SmallPotion();
-            FourthRoom.RoomItems.Add(LargePotion3);
             FourthRoom.RoomItems.Add(SmallPotion2);
+            FourthRoom.RoomItems.Add(LargePotion3);
 
             // creates and adds the potion for room 5
-            LargePotion LargePotion4 = new LargePotion();
+
             SmallPotion SmallPotion3 = new SmallPotion();
             SmallPotion SmallPotion4 = new SmallPotion();
-            FifthRoom.RoomItems.Add(LargePotion4);
+            SmallPotion SmallPotion5 = new SmallPotion();
+            LargePotion LargePotion4 = new LargePotion();
+            LargePotion LargePotion5 = new LargePotion();
+            LargePotion LargePotion6 = new LargePotion();
             FifthRoom.RoomItems.Add(SmallPotion3);
             FifthRoom.RoomItems.Add(SmallPotion4);
+            FifthRoom.RoomItems.Add(SmallPotion5);
+            FifthRoom.RoomItems.Add(LargePotion4);
+            FifthRoom.RoomItems.Add(LargePotion5);
+            FifthRoom.RoomItems.Add(LargePotion5);
+
 
 
 
@@ -128,8 +142,6 @@ namespace DungeonExplorer
             bool playing = true;
             Statistics playerStats = new Statistics(player.Name, player.Health);
             
-
-
             while (playing)
             {
                 //Menu text
@@ -195,6 +207,7 @@ namespace DungeonExplorer
                             }
                             else
                             {
+                                Console.WriteLine(player.InventoryContents());
                                 Console.WriteLine($"Your health is currently at {player.Health} would you like to use a small potion or large potion ");
                                 string PotionAnswer = Console.ReadLine().ToLower();
                                 if (PotionAnswer == "small potion")
@@ -245,7 +258,7 @@ namespace DungeonExplorer
                     {
                         Console.WriteLine(player.InventoryContents());
 
-                        Console.WriteLine("Would you like to drop any items? or Would you like to sort your potions from most strongest to weakest \n Type 'drop' or 'sort' ");
+                        Console.WriteLine("Would you like to drop any items? or Would you like to sort your potions from most strongest to weakest or do neither \n Type 'drop' or 'sort' 'neither' ");
                         string inventoryAnswer = Console.ReadLine().ToLower();
                         if (inventoryAnswer == "drop")
                         {
@@ -274,7 +287,7 @@ namespace DungeonExplorer
                                     break;
                                 }
                             }
-                            else if(dropAnswer == "no")
+                            else if (dropAnswer == "no")
                             {
                                 break;
                             }
@@ -285,6 +298,11 @@ namespace DungeonExplorer
                         }
                         else if (inventoryAnswer == "sort")
                         {
+                            if (!player.Inventory.Any())
+                            {
+                                Console.WriteLine("your inventory is currently empty there is nothing to sort");
+                                break;
+                            }
                             Console.WriteLine("would you like to sort your potions from most strongest to weakest yes or no");
                             String sortAnswer = Console.ReadLine().ToLower();
                             if (sortAnswer == "yes")
@@ -299,6 +317,12 @@ namespace DungeonExplorer
                             else if (sortAnswer == "no")
                                 break;
                         }
+                        else if (inventoryAnswer == "neither")
+                        {
+                            Console.WriteLine("you have chosen neither");
+                            break;
+                        }
+                        
                         else
                         {
                             Console.WriteLine("please next time enter drop or sort");
@@ -309,8 +333,6 @@ namespace DungeonExplorer
                     //allows user to pick up items if they are available
                     else if (action == "items")
                     {
-
-                        // Console.WriteLine("There is strange flasks around the room would you like to pick them up 'yes' or 'no'");
 
                         if (CurrentRoom.RoomItems.Count == 0)
                         {
@@ -356,18 +378,26 @@ namespace DungeonExplorer
                     //allows user to go to next room
                     else if (action == "next")
                     {
-                        if (CurrentRoom.Enemies.Count > 0)
+                        if (CurrentRoom.NextRoom == null)
                         {
-                            Console.WriteLine("You can not advance there are still mosters around");
-                            break;
+                            Console.WriteLine($"you have beaten the last monster the Crimson Dragon your quest has now come to a end {player.Name}");
+                            playing = false;
                         }
-
                         else
                         {
-                            CurrentRoom = CurrentRoom.NextRoom;
-                            Console.WriteLine($"\nYou move to: {CurrentRoom.Name}");
-                            Console.WriteLine(CurrentRoom.Description);
-                            break;
+                            if (CurrentRoom.Enemies.Count > 0)
+                            {
+                                Console.WriteLine("You can not advance there are still mosters around");
+                                break;
+                            }
+
+                            else
+                            {
+                                CurrentRoom = CurrentRoom.NextRoom;
+                                Console.WriteLine($"\nYou move to: {CurrentRoom.Name}");
+                                Console.WriteLine(CurrentRoom.Description);
+                                break;
+                            }
                         }
                     }
 

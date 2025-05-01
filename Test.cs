@@ -12,6 +12,8 @@ namespace DungeonExplorer
     public class Test
     {
         public static Room currentTestRoom;
+        
+        // runs all the tests 
         public static void RunTests()
         { 
             PickUpItemAndInventory();
@@ -20,7 +22,6 @@ namespace DungeonExplorer
             PlayerDeath();
         }
         //test pickup item and display inventory
-
         public static void PickUpItemAndInventory()
         {
             Player testPlayer = new Player("Player", 100, new List<Item>());
